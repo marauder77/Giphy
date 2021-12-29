@@ -6,46 +6,41 @@
 //TOKEN MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym
 
 
-
-const submitform = document.getElementById("submitForm")
+//made what I thought would be necessary, but I feel like some of these aren't necessary
+const submitForm = document.getElementById("submitForm")
 const searchItem = document.getElementById("Search")
 const submit = document.getElementById("submit")  
 const gifLocation = document.getElementById("gifLocation")
-const apiKey = "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym"
-const api = "http://api.giphy.com/v1/gifs/search"
 
 
-async function getGiphy() {
-    let res = await axios.get(api, {
+
+
+
+
+$("submitForm").on("submit", async function getGiphy(evt) {
+evt.preventDefault();
+
+let searchGif = $searchItem.val();
+$searchItem.val("")
+
+    const res = await axios.get("http://api.giphy.com/v1/gifs/search", {
         params: {
-            api_key: apiKey,
-            q: searchItem
+            api_key: "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym",
+            q: searchGif
         }
     })
-    return res.data.data;
-}
-
-function createGif(){
-    //container is where the gif will be. 
-    let container = document.createElement("div")
-    container.classList.add("container")
-    createImage(container);
-    //gifLocation is where the container will go into on the HTML.
-    gifLocation.append(container)
-   
-
-}
-
-function createImage() {
-    let result = Math.floor((Math.random() * 20) + 1);
-    // CANT FIGURE OUT HOW TO PULL THE URL FROM AXIOS/API TO CREATE THE IMAGE
-    // AND APPEND THAT TO gifLocation 
-    
-}
-//Tried using jQuery on this but I feel like something is off, but can't figure out what
-$(submitform).submit(function(evt) {
-    evt.preventDefault();
-    let searchValue = $("input").val
-    getGiphy(searchItem).then(function(result) { createGif(result)})
-    evt.target.reset();
+    addGif(res.data)
 })
+
+
+function addGif(res) {
+    let results = res.data.length;
+    if (results) {
+    let random = Math.floor(Math.random() * results);
+    let $createGif = $("<img>", {
+        src: res.data(random).images.original.url, 
+    })
+        $gifLocation.append($createGif)
+    }
+}
+
