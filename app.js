@@ -7,17 +7,18 @@
 
 
 //made what I thought would be necessary, but I feel like some of these aren't necessary
-const submitForm = document.getElementById("submitForm")
-const searchItem = document.getElementById("Search")
-const submit = document.getElementById("submit")  
-const gifLocation = document.getElementById("gifLocation")
+// const submitForm = document.getElementById("submitForm")
+// const searchItem = document.getElementById("Search")
+// const submit = document.getElementById("submit")  
+// const gifLocation = document.getElementById("gifLocation")
+
+const $gifLocation = $("#gifLocation");
+const $searchItem = $("#Search");
 
 
 
 
-
-
-$("submitForm").on("submit", async function getGiphy(evt) {
+$("#submitForm").on("submit", async function getGiphy(evt) {
 evt.preventDefault();
 
 let searchGif = $searchItem.val();
@@ -38,7 +39,7 @@ function addGif(res) {
     if (results) {
     let random = Math.floor(Math.random() * results);
     let $createGif = $("<img>", {
-        src: res.data(random).images.original.url, 
+        src: res.data[random].images.original.url, 
     })
         $gifLocation.append($createGif)
     }
